@@ -28,7 +28,8 @@ class TestMyClass(unittest.TestCase):
         print("test_case_IndexError")
         self.assertRaises(IndexError, lambda x: x.pop(), self.my_list)
 
-    @unittest.skipUnless(sys.platform.startswith("linux"), "requires Linux")
+    @unittest.skipUnless(__name__ != "__main__",
+                        "__name__ != '__main__'")
     def test_case_pop1(self):
         print("test_case_IndexError1")
         with self.assertRaises(IndexError):

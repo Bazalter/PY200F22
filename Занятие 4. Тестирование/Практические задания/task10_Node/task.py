@@ -32,3 +32,9 @@ class Node:
     def next(self, next_: Optional["Node"]):
         self.is_valid(next_)
         self._next = next_
+
+
+node_1 = Node(1)
+print(node_1)
+node_2 = Node(2, node_1)
+print(node_2.next)
