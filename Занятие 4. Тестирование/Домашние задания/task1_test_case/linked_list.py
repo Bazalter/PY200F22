@@ -77,3 +77,8 @@ class LinkedList:
             self.append(item)
 
         return self
+
+linked_list = LinkedList([1, 2, 3])
+print(linked_list)
+linked_list.append(4)
+print(linked_list)

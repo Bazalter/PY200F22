@@ -1,15 +1,18 @@
 # TODO загрузить абстрактный метод
 from typing import Union
+from abc import abstractmethod
 
 
 class LibraryBookOut:
-    # TODO нужно сделать абстрактным методом
+    # TODO нужно сделать абстрактным
+    @abstractmethod
     def check_out(self):
         pass
 
 
 class LibraryBookIn:
     # TODO тоже абстрактный
+    @abstractmethod
     def check_in(self):
         pass
 
@@ -21,9 +24,10 @@ class Book:
         self.ISBN = ISBN
 
 
-class PhysicalBook(# TODO что тут нужно добавить для разделения интерфейса?):
+class PhysicalBook(Book, LibraryBookOut, LibraryBookIn):
     def __init__(self, title: str, author: str, ISBN: str):
         # TODO что нужно написать, так как Book и PhysicalBook очень похожи?
+        super().__init__(title, author, ISBN)
         self.is_checked_out = False
 
     def check_out(self):
@@ -41,18 +45,20 @@ class PhysicalBook(# TODO что тут нужно добавить для ра�
             print(f"Книга {self.title} была возвращена.")
 
 
-class Ebook(# TODO а что тут?):
+class Ebook(Book, LibraryBookOut):
     def __init__(self, title: str, author: str, ISBN: str, link: str):
         # TODO как произвести расширение конструктора на базе какого-то класса?
+        super().__init__(title, author, ISBN)
         self.link = link
 
     def check_out(self):
         print(f"Электронная книга {self.title} доступна для скачивания по ссылке {self.link}")
 
 
-class Audiobook(# TODO разделяем интерфейс):
+class Audiobook(Book, LibraryBookOut):
     def __init__(self, title: str, author: str, ISBN: str, link: str):
         # TODO аналогично Ebook
+        super().__init__(title, author, ISBN)
         self.link = link
 
     def check_out(self):
@@ -65,16 +71,17 @@ class Library:
 
     def add_book(self, book: Union[LibraryBookIn, LibraryBookOut]): # Ранее была зависимость на абстракции LibraryBook, а что теперь?
         # TODO добавляем книги
+        self.books.append(book)
 
     def check_out_book(self, ISBN: str):
         for book in self.books:
-            if # ранее писали book.ISBN == ISBN, а что теперь нужно добавить к прошлой записи, чтобы обработать нужный интерфейс?:
+            if isinstance(book, LibraryBookOut) and book.ISBN == ISBN:
                 return book.check_out()
         print(f"Книга с ISBN {ISBN} не найдена.")
 
     def check_in_book(self, ISBN: str):
         for book in self.books:
-            if # дописать проверку для cheek_in_book:
+            if isinstance(book, LibraryBookIn) and book.ISBN == ISBN:
                 return book.check_in()
         print(f"Книга с ISBN {ISBN} не найдена или не может быть возвращена.")
 
